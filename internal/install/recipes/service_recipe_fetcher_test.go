@@ -57,29 +57,14 @@ func TestFetchRecommendations(t *testing.T) {
 		{
 			ID:   "MAo=",
 			Name: "testing1",
-			File: `
----
-name: Test recipe file
-description: test description
-`,
 		},
 		{
 			ID:   "non-zero",
 			Name: "testing1",
-			File: `
----
-name: Test recipe file2
-description: test description
-`,
 		},
 		{
 			ID:   "non-zero2",
 			Name: "testing2",
-			File: `
----
-name: Test recipe file3
-description: test description
-`,
 		},
 	}
 
