@@ -2,6 +2,7 @@ package discovery
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/newrelic/newrelic-cli/internal/install/types"
 )
@@ -25,8 +26,8 @@ func (v *OsValidator) Execute(m *types.DiscoveryManifest) error {
 	if m.OS == "" {
 		return fmt.Errorf(noOperatingSystemDetected)
 	}
-	// if !(strings.ToLower(m.OS) == "linux" || strings.ToLower(m.OS) == "windows") {
-	// 	return fmt.Errorf(operatingSystemNotSupportedFormat, m.OS)
-	// }
+	if !(strings.ToLower(m.OS) == "linux" || strings.ToLower(m.OS) == "windows") {
+		return fmt.Errorf(operatingSystemNotSupportedFormat, m.OS)
+	}
 	return nil
 }

@@ -23,7 +23,10 @@ func (r *OpenInstallationRecipe) UnmarshalYAML(unmarshal func(interface{}) error
 		return err
 	}
 
-	r.Dependencies = interfaceSliceToStringSlice(recipe["dependencies"].([]interface{}))
+	if v, ok := recipe["dependencies"]; ok {
+		r.Dependencies = interfaceSliceToStringSlice(v.([]interface{}))
+	}
+
 	r.Description = toStringByFieldName("description", recipe)
 	r.DisplayName = toStringByFieldName("displayName", recipe)
 	r.File = toStringByFieldName("file", recipe)
@@ -37,12 +40,19 @@ func (r *OpenInstallationRecipe) UnmarshalYAML(unmarshal func(interface{}) error
 	r.Install = installAsString
 
 	r.InstallTargets = expandInstallTargets(recipe)
-	r.Keywords = interfaceSliceToStringSlice(recipe["keywords"].([]interface{}))
+
+	if v, ok := recipe["keywords"]; ok {
+		r.Keywords = interfaceSliceToStringSlice(v.([]interface{}))
+	}
+
 	r.LogMatch = expandLogMatch(recipe)
 	r.Name = toStringByFieldName("name", recipe)
 	r.PostInstall = expandPostInstall(recipe)
 	r.PreInstall = expandPreInstall(recipe)
-	r.ProcessMatch = interfaceSliceToStringSlice(recipe["processMatch"].([]interface{}))
+
+	if v, ok := recipe["processMatch"]; ok {
+		r.ProcessMatch = interfaceSliceToStringSlice(v.([]interface{}))
+	}
 
 	// Quickstarts are not quite ready in the API yet.
 	// The Nerdgraph type are incorrect and will get getting
@@ -278,7 +288,7 @@ func toStringByFieldName(fieldName string, data map[string]interface{}) string {
 func expandInstalllMapToString(recipeIn map[string]interface{}) (string, error) {
 	installIn, ok := recipeIn["install"]
 	if !ok {
-		return "", fmt.Errorf("error unmarshaling installation recipe: field 'install' is empty or undefined")
+		return "", nil
 	}
 
 	installOut := map[string]interface{}{}
