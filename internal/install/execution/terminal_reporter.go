@@ -1,8 +1,10 @@
 package execution
 
 import (
+	"encoding/json"
 	"fmt"
 	"strings"
+	"time"
 
 	log "github.com/sirupsen/logrus"
 
@@ -110,6 +112,11 @@ func (r TerminalStatusReporter) InstallComplete(status *InstallStatus) error {
 }
 
 func (r *TerminalStatusReporter) getSuccessLink(status *InstallStatus) string {
+	log.Print("\n\n **************************** \n")
+	log.Printf("\n\n getSuccessLink - status:  %+v \n\n", toJSON(status))
+	log.Print("\n **************************** \n\n")
+	time.Sleep(4 * time.Second)
+
 	if status.hasAnyRecipeStatus(RecipeStatusTypes.INSTALLED) {
 		switch t := status.successLinkConfig.Type; {
 		case strings.EqualFold(string(t), "explorer"):
@@ -119,6 +126,12 @@ func (r *TerminalStatusReporter) getSuccessLink(status *InstallStatus) string {
 		}
 	}
 	return ""
+}
+
+func toJSON(data interface{}) string {
+	c, _ := json.MarshalIndent(data, "", "  ")
+
+	return string(c)
 }
 
 func (r TerminalStatusReporter) InstallCanceled(status *InstallStatus) error {
